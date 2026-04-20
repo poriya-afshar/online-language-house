@@ -1,0 +1,62 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2026-02-24 15:09+0330\n"
+"PO-Revision-Date: 2026-02-24 15:30+0330\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\templates\core\index.html:54
+msgid "آینده زبان خود را روشن کنید"
+msgstr "Brighten Your Language Future"
+
+#: .\templates\core\index.html:57
+msgid "دوره‌های حرفه‌ای با اساتید بین‌المللی"
+msgstr "Professional Courses with International Instructors"
+
+#: .\templates\core\index.html:65
+msgid "دوره‌ها"
+msgstr "Courses"
+
+#: .\templates\core\index.html:82
+msgid "دوره‌ای ثبت نشده است."
+msgstr "No courses have been registered."
+
+#: .\templates\core\index.html:93
+msgid "اساتید ما"
+msgstr "Our Instructors"
+
+#: .\templates\core\index.html:109
+msgid "استادی ثبت نشده است."
+msgstr "No instructors have been registered."
+
+#: .\templates\core\index.html:120
+msgid "نظرات دانش‌آموزان"
+msgstr "Student Testimonials"
+
+#: .\templates\core\index.html:130
+msgid "نظری ثبت نشده است."
+msgstr "No testimonials have been submitted."
+
+#: .\templates\core\index.html:140
+msgid "تماس با ما"
+msgstr "Contact Us"
+
+#: .\templates\core\index.html:145
+msgid "نام"
+msgstr "Name"
+
+#: .\templates\core\index.html:147
+msgid "ایمیل"
+msgstr "Email"
+
+#: .\templates\core\index.html:150
+msgid "پیام شما"
+msgstr "Your Message"
+
+#: .\templates\core\index.html:155
+msgid "ارسال پیام"
+msgstr "Send Message"

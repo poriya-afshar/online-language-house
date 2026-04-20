@@ -1,0 +1,277 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ request.LANGUAGE_CODE }}"
+      dir="{% if request.LANGUAGE_CODE == 'fa' %}rtl{% else %}ltr{% endif %}"
+      class="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Language House</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Vazirmatn:wght@300;400;500;700;900&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<!-- ============= NAVBAR ============= -->
+<nav id="navbar">
+    <div class="nav-logo">Online<span>Language</span>House</div>
+    <div class="nav-controls">
+        <form action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            {#            <select name="language" onchange="this.form.submit()" class="lang-select">#}
+            {#                <option value="fa" {% if request.LANGUAGE_CODE == 'fa' %}selected{% endif %}>FA</option>#}
+            {#                <option value="en" {% if request.LANGUAGE_CODE == 'en' %}selected{% endif %}>EN</option>#}
+            {#            </select>#}
+        </form>
+    </div>
+</nav>
+
+<!-- ============= HERO ============= -->
+<section id="hero">
+
+    {% if hero and hero.background_image %}
+        <div class="hero-bg"
+             style="background-image:url('{{ hero.background_image.url }}');
+                     background-size:cover;
+                     background-position:center;">
+        </div>
+    {% else %}
+        <div class="hero-bg"></div>
+    {% endif %}
+
+    <div style="position:relative; z-index:1;">
+
+        <div class="hero-label">✦ آموزشگاه آنلاین زبان</div>
+
+        <h1 class="display hero-title">
+            {% if hero %}
+                {{ hero.title_line1 }}<br>
+                <span class="accent">{{ hero.title_highlight }}</span>
+            {% else %}
+                آینده زبان خود را<br>
+                <span class="accent">روشن کنید</span>
+            {% endif %}
+        </h1>
+
+        <p class="hero-sub">
+            {% if hero %}
+                {{ hero.subtitle }}
+            {% else %}
+                دوره‌های حرفه‌ای با اساتید بین‌المللی — تجربه‌ای متفاوت از یادگیری زبان
+            {% endif %}
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ============= STATS ============= -->
+<div class="stats-bar">
+    {% if stats %}
+
+        <div class="stat-item reveal">
+            <div class="number">{{ stats.students }}</div>
+            <div class="label">{% trans "دانش‌آموز فعال" %}</div>
+        </div>
+
+        <div class="stat-item reveal">
+            <div class="number">{{ stats.courses }}</div>
+            <div class="label">{% trans "دوره تخصصی" %}</div>
+        </div>
+
+        <div class="stat-item reveal">
+            <div class="number">{{ stats.teachers }}</div>
+            <div class="label">{% trans "استاد بین‌المللی" %}</div>
+        </div>
+
+        <div class="stat-item reveal">
+            <div class="number">{{ stats.satisfaction }}</div>
+            <div class="label">{% trans "رضایت دانش‌آموزان" %}</div>
+        </div>
+
+    {% endif %}
+</div>
+
+<!-- ============= COURSES ============= -->
+<section id="courses">
+    <div style="max-width:1280px; margin:0 auto;">
+        <div class="section-header reveal">
+            <div class="section-label">✦ {% trans "آموزش" %}</div>
+            <h2 class="display section-title">{% trans "دوره‌های ما" %}</h2>
+            <p class="section-subtitle">{% trans "از مبتدی تا پیشرفته — با ساختاری علمی و استادانی باتجربه" %}</p>
+        </div>
+
+        <div class="courses-grid">
+            {% for course in courses %}
+                <div class="course-card reveal" style="transition-delay:{{ forloop.counter0|divisibleby:3 }}0.1s">
+                    <div class="course-img-wrap">
+                        <img src="{{ course.image.url }}" alt="{{ course.title }}">
+                    </div>
+                    <div class="course-body">
+                        <div class="course-tags">
+                            <span class="tag">{{ course.level }}</span>
+                            <span class="tag teal">{{ course.duration }}</span>
+                        </div>
+                        <h3 class="course-title">{{ course.title }}</h3>
+                        <p class="course-desc">{{ course.description|truncatewords:20 }}</p>
+                        <a href="{% url 'course_detail' course.id %}" class="course-link">
+                            {% trans "جزئیات دوره" %} <i class="fa fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+            {% empty %}
+                <p style="color:rgba(245,240,232,0.4);">{% trans "دوره‌ای ثبت نشده است." %}</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- ============= TEACHERS ============= -->
+<section id="teachers">
+    <div class="max-w">
+        <div class="section-header reveal" style="text-align:center;">
+            <div class="section-label">✦ {% trans "تیم آموزشی" %}</div>
+            <h2 class="display section-title">{% trans "اساتید ما" %}</h2>
+            <p class="section-subtitle"
+               style="margin:0 auto;">
+                {% trans "متخصصانی از سراسر جهان که یادگیری را لذت‌بخش می‌کنند" %}
+            </p>
+        </div>
+
+        <div class="teachers-grid">
+            {% for teacher in teachers %}
+                <a href="{% url 'teacher_detail' teacher.id %}" class="teacher-card reveal">
+                    <div class="teacher-img-wrap">
+                        {% if teacher.image %}
+                            <img src="{{ teacher.image.url }}" alt="{{ teacher.name }}">
+                        {% endif %}
+                    </div>
+
+                    <h3 class="teacher-name">{{ teacher.name }}</h3>
+                    <div class="teacher-exp">{{ teacher.expertise }}</div>
+                    <p class="teacher-bio">{{ teacher.bio|truncatewords:15 }}</p>
+
+                    <div class="course-link">
+                        {% trans "جزئیات استاد" %}
+                        <i class="fa fa-arrow-left"></i>
+                    </div>
+                </a>
+            {% empty %}
+                <p style="color:rgba(245,240,232,0.4);">
+                    {% trans "استادی ثبت نشده است." %}
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============= TESTIMONIALS ============= -->
+<section id="testimonials">
+    <div style="max-width:900px; margin:0 auto;">
+        <div class="section-header reveal" style="text-align:center;">
+            <div class="section-label">✦ مدارک</div>
+            <!-- heading removed as requested -->
+        </div>
+        <div class="testimonials-wrap">
+            {% for t in testimonials %}
+                <div class="testimonial-card reveal">
+                    <div class="quote-mark">"</div>
+                    <p class="testimonial-text">{{ t.text }}</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">{{ t.name|first }}</div>
+                        <div>
+                            <div class="author-name">{{ t.name }}</div>
+                            <div class="author-role">{{ t.role }}</div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p style="color:rgba(245,240,232,0.4); text-align:center;">{% trans "نظری ثبت نشده است." %}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+
+</section>
+
+
+<!-- ============= FOOTER ============= -->
+<footer>
+    <div class="footer-grid">
+
+        <!-- Contact -->
+        <div>
+            <h3 class="footer-title">{% trans "تماس با ما" %}</h3>
+            <form method="post" class="contact-form">
+                {% csrf_token %}
+                <input type="text" name="name" placeholder="{% trans 'نام شما' %}" class="form-input">
+                <input type="email" name="email" placeholder="{% trans 'ایمیل' %}" class="form-input">
+                <textarea name="message" rows="4" placeholder="{% trans 'پیام شما...' %}" class="form-input"></textarea>
+                <button type="submit" class="submit-btn">{% trans "ارسال پیام" %} ✦</button>
+            </form>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="success-msg">✓ {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <!-- Brand -->
+        <div class="brand-block">
+            <div class="brand-name">Online<span>Language</span>House</div>
+            <p style="font-size:0.75rem; color:rgba(245,240,232,0.4); letter-spacing:0.1em; margin-bottom:0;">— آموزش
+                جهانی، تجربه محلی</p>
+
+            <div class="social-row">
+                {% for social in social_links %}
+                    <a href="{{ social.url }}" target="_blank" class="social-link" title="{{ social.name }}">
+                        <i class="{{ social.icon_class }}"></i>
+                    </a>
+                {% endfor %}
+            </div>
+
+            {% if about %}
+                <div class="about-section">
+
+                    <h4 class="footer-title">
+                        {{ about.title }}
+                    </h4>
+
+                    <p class="about-text">
+                        {{ about.description }}
+                    </p>
+
+                    {% if about.image %}
+                        <img src="{{ about.image.url }}"
+                             style="width:120px; border-radius:12px; margin:20px 0;">
+                    {% endif %}
+
+                    <div style="font-size:0.75rem; color:rgba(245,240,232,0.4);">
+                        {% trans "تأسیس:" %} {{ about.founded_year }}
+                    </div>
+
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <span> OnlineLanguageHouse. All rights reserved</span>
+    </div>
+</footer>
+
+<!-- Back to top -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
+
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ request.LANGUAGE_CODE }}"
+      dir="{% if request.LANGUAGE_CODE == 'fa' %}rtl{% else %}ltr{% endif %}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.title }} — OnlineLanguageHouse</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Vazirmatn:wght@300;400;500;700;900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/Course_detail.css' %}">
+
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <a href="{% url 'home' %}" class="nav-logo">Online<span>Language</span>House</a>
+    <a href="{% url 'home' %}#courses" class="nav-back">
+        <i class="fa fa-arrow-right"></i>
+        {% trans "بازگشت به دوره‌ها" %}
+    </a>
+</nav>
+
+<!-- HERO -->
+<section class="course-hero">
+    <div class="hero-image">
+        {% if course.image %}
+            <img src="{{ course.image.url }}" alt="{{ course.title }}">
+        {% else %}
+            <div class="no-img-placeholder"></div>
+        {% endif %}
+    </div>
+
+    <div class="hero-content">
+        <div class="breadcrumb">
+            <a href="{% url 'home' %}">{% trans "خانه" %}</a>
+            <span class="sep">✦</span>
+            <a href="{% url 'home' %}#courses">{% trans "دوره‌ها" %}</a>
+            <span class="sep">✦</span>
+            <span>{{ course.title }}</span>
+        </div>
+
+        <div class="course-tags">
+            <span class="tag tag-gold">{{ course.level }}</span>
+            <span class="tag tag-teal">{{ course.duration }}</span>
+            {% if course.language %}<span class="tag tag-glass">{{ course.language }}</span>{% endif %}
+        </div>
+
+        <h1 class="course-title-hero">{{ course.title }}</h1>
+
+        <p class="course-short-desc">{{ course.description|truncatewords:30 }}</p>
+    </div>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+
+    <!-- LEFT COLUMN -->
+    <div>
+
+        <!-- About Course -->
+        <div class="content-block reveal">
+            <div class="section-label">✦ {% trans "معرفی دوره" %}</div>
+            <h2 class="section-heading">{% trans "درباره این دوره" %}</h2>
+            <p class="body-text">{{ course.description }}</p>
+        </div>
+
+        <!-- What You'll Learn -->
+        {% if course.learning_outcomes.exists %}
+            <div class="content-block reveal">
+                <div class="section-label">✦ {% trans "خروجی یادگیری" %}</div>
+                <h2 class="section-heading">{% trans "چه یاد خواهید گرفت؟" %}</h2>
+                <div class="learn-grid">
+                    {% for item in course.learning_outcomes.all %}
+                        <div class="learn-item">
+                            <i class="fa fa-check learn-icon"></i>
+                            <span>{{ item.text }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <!-- Fallback placeholder outcomes -->
+            <div class="content-block reveal">
+                <div class="section-label">✦ {% trans "خروجی یادگیری" %}</div>
+                <h2 class="section-heading">{% trans "چه یاد خواهید گرفت؟" %}</h2>
+                <div class="learn-grid">
+                    <div class="learn-item"><i
+                            class="fa fa-check learn-icon"></i><span>{% trans "تسلط بر مهارت‌های پایه تا پیشرفته" %}</span>
+                    </div>
+                    <div class="learn-item"><i
+                            class="fa fa-check learn-icon"></i><span>{% trans "تمرین مکالمه با اساتید بومی" %}</span>
+                    </div>
+                    <div class="learn-item"><i
+                            class="fa fa-check learn-icon"></i><span>{% trans "آمادگی برای آزمون‌های بین‌المللی" %}</span>
+                    </div>
+                    <div class="learn-item"><i
+                            class="fa fa-check learn-icon"></i><span>{% trans "دریافت گواهینامه معتبر" %}</span></div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Syllabus -->
+        {% if course.sessions.exists %}
+            <div class="content-block reveal">
+                <div class="section-label">✦ {% trans "محتوا" %}</div>
+                <h2 class="section-heading">{% trans "سرفصل‌های دوره" %}</h2>
+                <div class="syllabus-list">
+                    {% for session in course.sessions.all %}
+                        <div class="syllabus-item">
+                            <div class="syl-left">
+                                <div class="syl-num">{{ forloop.counter }}</div>
+                                <div>
+                                    <div class="syl-title">{{ session.title }}</div>
+                                    {% if session.duration %}
+                                        <div class="syl-duration">{{ session.duration }}</div>{% endif %}
+                                </div>
+                            </div>
+                            <i class="fa fa-play-circle" style="color: rgba(201,168,76,0.5); font-size:1.1rem;"></i>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Teacher -->
+        {% if course.teacher %}
+            <div class="content-block reveal">
+                <div class="section-label">✦ {% trans "مدرس دوره" %}</div>
+                <h2 class="section-heading">{% trans "استاد این دوره" %}</h2>
+                <a href="{% url 'teacher_detail' course.teacher.id %}" class="teacher-mini">
+                    <img src="{{ course.teacher.image.url }}" alt="{{ course.teacher.name }}" class="teacher-mini-img">
+                    <div>
+                        <div class="teacher-mini-name">{{ course.teacher.name }}</div>
+                        <div class="teacher-mini-exp">{{ course.teacher.expertise }}</div>
+                        <div class="teacher-mini-bio">{{ course.teacher.bio|truncatewords:15 }}</div>
+                    </div>
+                    <i class="fa fa-arrow-left" style="color:var(--gold); margin-right: auto; opacity:0.6;"></i>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- Reviews -->
+        {% if course.reviews.exists %}
+            <div class="reviews-section reveal">
+                <div class="section-label">✦ {% trans "نظرات" %}</div>
+                <h2 class="section-heading">{% trans "نظر دانش‌آموزان" %}</h2>
+                {% for review in course.reviews.all %}
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer">
+                                <div class="reviewer-avatar">{{ review.name|first }}</div>
+                                <div>
+                                    <div class="reviewer-name">{{ review.name }}</div>
+                                    <div class="reviewer-date">{{ review.created_at|date:"Y/m/d" }}</div>
+                                </div>
+                            </div>
+                            <div class="review-stars">★★★★★</div>
+                        </div>
+                        <p class="review-text">{{ review.text }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </div>
+
+    <!-- RIGHT COLUMN: Enroll Card -->
+    <div>
+        <div class="enroll-card reveal">
+            {% if course.image %}
+                <img src="{{ course.image.url }}" alt="{{ course.title }}" class="enroll-img">
+            {% else %}
+                <div class="no-img-placeholder enroll-img"></div>
+            {% endif %}
+            <div class="enroll-body">
+
+                {% comment %}visibility computed in view to avoid template method calls{% endcomment %}
+
+            
+                <div class="enroll-divider"></div>
+
+                <div class="enroll-details">
+                    <div class="enroll-detail-row">
+                        <span class="key"><i class="fa fa-layer-group"></i> {% trans "سطح" %}</span>
+                        <span class="val">{{ course.level }}</span>
+                    </div>
+                    <div class="enroll-detail-row">
+                        <span class="key"><i class="fa fa-clock"></i> {% trans "مدت" %}</span>
+                        <span class="val">{{ course.duration }}</span>
+                    </div>
+                    {% if course.sessions_count %}
+                        <div class="enroll-detail-row">
+                            <span class="key"><i class="fa fa-play-circle"></i> {% trans "جلسات" %}</span>
+                            <span class="val">{{ course.sessions_count }} {% trans "جلسه" %}</span>
+                        </div>
+                    {% endif %}
+                    {% if course.language %}
+                        <div class="enroll-detail-row">
+                            <span class="key"><i class="fa fa-globe"></i> {% trans "زبان" %}</span>
+                            <span class="val">{{ course.language }}</span>
+                        </div>
+                    {% endif %}
+                    {% if course.certificate is not None %}
+                        <div class="enroll-detail-row">
+                            <span class="key"><i class="fa fa-certificate"></i> {% trans "گواهینامه" %}</span>
+                            <span class="val">{% if course.certificate %}{% trans "دارد" %}{% else %}{% trans "ندارد" %}{% endif %}</span>
+                        </div>
+                    {% endif %}
+                    {% if course.access %}
+                        <div class="enroll-detail-row">
+                            <span class="key"><i class="fa fa-mobile"></i> {% trans "دسترسی" %}</span>
+                            <span class="val">{{ course.access }}</span>
+                        </div>
+                    {% endif %}
+                    {% if course.test_level %}
+                        <div class="enroll-detail-row">
+                            <span class="key"><i class="fa fa-question-circle"></i> {% trans "تست سطح دوره" %}</span>
+                            <span class="val">{{ course.test_level }}</span>
+                        </div>
+                    {% endif %}
+                    {% if course.test_duration %}
+                        <div class="enroll-detail-row">
+                            <span class="key"><i class="fa fa-hourglass"></i> {% trans "مدت آزمون" %}</span>
+                            <span class="val">{{ course.test_duration }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- MINI FOOTER -->
+<footer class="mini-footer">
+    <a href="{% url 'home' %}">OnlineLanguageHouse</a>
+    <span>© 2026 — {% trans "تمام حقوق محفوظ است" %}</span>
+</footer>
+
+<script src="{% static 'js/Course_detail.js' %}"></script>
+
+</body>
+</html>
