@@ -45,14 +45,14 @@
 
         <h1 class="teacher-name">{{ teacher.name }}</h1>
 
-        <p class="teacher-tagline">
+        <!-- <p class="teacher-tagline">
             {{ teacher.bio|truncatewords:25 }}
-        </p>
+        </p> -->
 
         <div class="teacher-meta-row">
             {% if teacher.experience_years %}
                 <div class="meta-item">
-                    <div class="icon"><i class="fa fa-clock"></i></div>
+                    <!-- <div class="icon"><i class="fa fa-clock"></i></div> -->
                     <span>{{ teacher.experience_years }} {% trans "سال تجربه" %}</span>
                 </div>
             {% endif %}
@@ -70,7 +70,7 @@
             {% endif %}
         </div>
 
-        <div class="teacher-actions">
+        <!-- <div class="teacher-actions">
             <a href="#courses-section" class="btn-primary">
                 <i class="fa fa-play"></i>
                 {% trans "مشاهده دوره‌ها" %}
@@ -79,7 +79,7 @@
                 <i class="fa fa-envelope"></i>
                 {% trans "تماس" %}
             </a>
-        </div>
+        </div> -->
     </div>
 
     <!-- Visual -->

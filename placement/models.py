@@ -61,12 +61,12 @@ class QuestionOption(models.Model):
 class PlacementResult(models.Model):
     """نتایج تست دانشجویان"""
     name = models.CharField(max_length=150, verbose_name='نام دانش‌آموز')
-    email = models.EmailField(blank=True, verbose_name='ایمیل')
     level = models.CharField(max_length=2, choices=LEVEL_CHOICES, verbose_name='سطح تشخیص داده شده')
     score = models.PositiveIntegerField(verbose_name='تعداد پاسخ صحیح')
     total = models.PositiveIntegerField(verbose_name='تعداد کل سوالات')
     time_seconds = models.PositiveIntegerField(default=0, verbose_name='مدت زمان (ثانیه)')
     taken_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ آزمون')
+    phone = models.CharField("شماره تلفن", max_length=20, blank=False, null=False, default='')
 
     class Meta:
         ordering = ['-taken_at']

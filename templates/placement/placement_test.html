@@ -2,102 +2,108 @@
 {% load i18n %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تست تعیین سطح | Online Language House</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.1/css/all.css"> -->
     <link rel="stylesheet" href="{% static 'css/placement_test.css' %}">
 </head>
+
 <body>
-<div class="bg-glow"></div>
+    <div class="bg-glow"></div>
 
-<nav>
-    <a href="/" class="nav-logo">Online<span>Language</span>House</a>
-    <a href="/" class="nav-back"><i class="fa fa-arrow-right"></i> بازگشت</a>
-</nav>
+    <nav>
+        <a href="/" class="nav-logo">Online<span>Language</span>House</a>
+        <a href="/" class="nav-back"><i class="fa fa-arrow-right"></i> بازگشت</a>
+    </nav>
 
-<div class="wrapper">
-    <div id="intro-screen">
-        <div class="intro-badge">Placement Test 2026</div>
-        <h1 class="intro-title">تست تعیین سطح <span class="accent">آنلاین</span></h1>
-        <p class="intro-sub">برای شروع، نام خود را وارد کنید تا دقیق‌ترین سطح آموزشی برای شما مشخص شود.</p>
+    <div class="wrapper">
+        <div id="intro-screen">
+            <div class="intro-badge">Placement Test 2026</div>
+            <h1 class="intro-title">تست تعیین سطح <span class="accent">آنلاین</span></h1>
+            <p class="intro-sub">برای شروع، نام و شماره تلفن خود را وارد کنید.</p>
 
-        <div class="student-form">
-            <input type="text" id="user-name" placeholder="نام و نام خانوادگی" class="form-input">
-        </div>
+            <div class="student-form">
+                <input type="text" id="user-name" placeholder="نام و نام خانوادگی" class="form-input">
 
-        {% if no_questions %}
+                <input type="tel" id="user-phone" placeholder="شماره تلفن (فقط عدد)" class="form-input"
+                    style="margin-top: 12px;" inputmode="numeric" pattern="[0-9]*"
+                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                <small style="display: block; color: rgba(245,240,232,0.5); font-size: 0.7rem; margin-top: 5px;">
+                    فقط عدد (۱۱ تا ۱۵ رقم) وارد کنید
+                </small>
+            </div>
+
+            {% if no_questions %}
             <p class="error-msg">فعلاً سوال فعالی برای آزمون وجود ندارد. لطفاً بعداً مراجعه کنید.</p>
-        {% endif %}
+            {% endif %}
 
-        <button class="start-btn" {% if no_questions %}disabled{% endif %} onclick="startApp()">
-            شروع آزمون <i class="fa fa-play"></i>
-        </button>
-    </div>
-
-    <div id="quiz-screen">
-        <div class="progress-wrap">
-            <div class="progress-top">
-                <span class="progress-label">در حال برگزاری آزمون</span>
-                <span id="progress-counter" class="progress-counter">0/0</span>
-            </div>
-            <div class="progress-track">
-                <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
-            </div>
-            <div class="timer-wrap">
-                <i class="fa fa-clock"></i> زمان باقی‌مانده: <span id="timer-display">00:00</span>
-            </div>
+            <button class="start-btn" {% if no_questions %}disabled{% endif %} onclick="startApp()">
+                شروع آزمون <i class="fa fa-play"></i>
+            </button>
         </div>
 
-        <div id="question-area">
-        </div>
-    </div>
-
-    <div id="result-screen">
-        <div class="result-card">
-            <div class="result-sub">سطح اختصاصی شما</div>
-            <div id="final-level" class="result-level">--</div>
-            <!-- <div id="score-text" class="result-level-name">تعداد پاسخ صحیح: 0</div> -->
-
-            <div class="breakdown">
-                <div class="breakdown-item">
-                    <div id="res-correct" class="breakdown-num correct-c">0</div>
-                    <div class="breakdown-lbl">صحیح</div>
+        <div id="quiz-screen">
+            <div class="progress-wrap">
+                <div class="progress-top">
+                    <span class="progress-label">در حال برگزاری آزمون</span>
+                    <span id="progress-counter" class="progress-counter">0/0</span>
                 </div>
-                <div class="breakdown-item">
-                    <div id="res-wrong" class="breakdown-num wrong-c">0</div>
-                    <div class="breakdown-lbl">غلط</div>
+                <div class="progress-track">
+                    <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
                 </div>
-                <div class="breakdown-item">
-                    <div id="res-time" class="breakdown-num neutral-c">0</div>
-                    <div class="breakdown-lbl">ثانیه</div>
+                <div class="timer-wrap">
+                    <i class="fa fa-clock"></i> زمان باقی‌مانده: <span id="timer-display">00:00</span>
                 </div>
             </div>
 
-            <div class="result-actions">
-                <button onclick="location.reload()" class="btn-primary">آزمون مجدد</button>
-                <a href="/" class="btn-ghost">بازگشت به خانه</a>
+            <div id="question-area">
+            </div>
+        </div>
+
+        <div id="result-screen">
+            <div class="result-card">
+                <div class="result-sub">سطح اختصاصی شما</div>
+                <div id="final-level" class="result-level">--</div>
+
+                <div class="breakdown">
+                    <div class="breakdown-item">
+                        <div id="res-correct" class="breakdown-num correct-c">0</div>
+                        <div class="breakdown-lbl">صحیح</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div id="res-wrong" class="breakdown-num wrong-c">0</div>
+                        <div class="breakdown-lbl">غلط</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div id="res-time" class="breakdown-num neutral-c">0</div>
+                        <div class="breakdown-lbl">ثانیه</div>
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <button onclick="location.reload()" class="btn-primary">آزمون مجدد</button>
+                    <a href="/" class="btn-ghost">بازگشت به خانه</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    // مرحله 1: تعریف متغیر به صورت خام
-    // استفاده از کاتیشن برای اینکه اگر دیتا خالی بود جاوااسکریپت کرش نکند
-    // bootstrap config – questions will be fetched on demand
-    window.CONFIG = {
-        QUESTIONS: [],                // filled later
-        QUESTIONS_URL: "{% url 'placement_questions' %}",
-        // initial value is irrelevant; real duration will be filled by AJAX
-        DURATION: 0,
-        SAVE_URL: "{% url 'save_placement_result' %}",
-        CSRF_TOKEN: "{{ csrf_token }}",
-        // no course-specific data needed for global test
-    };
-</script>
+    <script>
+        window.CONFIG = {
+            QUESTIONS: [],
+            QUESTIONS_URL: "{% url 'placement_questions' %}",
+            DURATION: 0,
+            SAVE_URL: "{% url 'save_placement_result' %}",
+            CSRF_TOKEN: "{{ csrf_token }}",
+        };
+    </script>
 
-<script src="{% static 'js/placement_test.js' %}"></script>
+    <script src="{% static 'js/placement_test.js' %}"></script>
 </body>
+
 </html>

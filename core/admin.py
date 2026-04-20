@@ -35,12 +35,6 @@ class AboutAdmin(admin.ModelAdmin):
     list_display = ("title",)
 
 
-@admin.register(Testimonial)
-class TestimonialAdmin(admin.ModelAdmin):
-    list_display = ("name", "role")
-    search_fields = ("name",)
-
-
 @admin.register(SocialLink)
 class SocialLinkAdmin(admin.ModelAdmin):
     list_display = ("name", "url", "icon_class")
@@ -48,15 +42,8 @@ class SocialLinkAdmin(admin.ModelAdmin):
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
-    list_display = ("name", "email", "created_at")
-    readonly_fields = ("name", "email", "message", "created_at")
-    ordering = ("-created_at",)
-
-
-@admin.register(PlacementTestSubmission)
-class PlacementTestAdmin(admin.ModelAdmin):
-    list_display = ("name", "email", "score", "level_result", "created_at")
-    readonly_fields = ("name", "email", "score", "level_result", "created_at")
+    list_display = ("name", "email", "created_at",'phone')
+    readonly_fields = ("name", "email", "message", "created_at",'phone')
     ordering = ("-created_at",)
 
 

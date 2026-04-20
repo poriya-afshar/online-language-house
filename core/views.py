@@ -14,12 +14,14 @@ def home(request):
         name = request.POST.get("name")
         email = request.POST.get("email")
         message = request.POST.get("message")
+        phone = request.POST.get("phone",'')
 
         if name and email and message:
             ContactMessage.objects.create(
                 name=name,
                 email=email,
-                message=message
+                message=message,
+                phone=phone
             )
 
             messages.success(request, "پیام شما با موفقیت ارسال شد.")
@@ -30,7 +32,7 @@ def home(request):
         "about": About.objects.first(),
         "courses": Course.objects.filter(is_active=True),
         "teachers": Teacher.objects.filter(is_active=True),
-        "testimonials": Testimonial.objects.filter(is_approved=True),
+        # "testimonials": Testimonial.objects.filter(is_approved=True),
         "social_links": SocialLink.objects.all(),
         "hero": Hero.objects.first(),
         "stats": SiteStats.objects.first(),
@@ -74,28 +76,6 @@ def course_placement_test(request, id):
     return render(request, "placement/placement_test.html", context)
 
 
-# ==========================
-# Placement Test
-# ==========================
-def placement_test(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-        score = request.POST.get("score")
-        level_result = request.POST.get("level_result")
-
-        if name and email:
-            PlacementTestSubmission.objects.create(
-                name=name,
-                email=email,
-                score=score or 0,
-                level_result=level_result or "Unknown"
-            )
-
-            messages.success(request, "نتیجه تست با موفقیت ثبت شد.")
-            return redirect("placement_test")
-
-    return render(request, "placement/placement_test.html")
 
 
 def teacher_detail(request, id):

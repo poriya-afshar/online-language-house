@@ -56,19 +56,19 @@ class About(models.Model):
         return "About"
 
 
-class Testimonial(models.Model):
-    name = models.CharField("نام", max_length=200)
-    role = models.CharField("نقش", max_length=200)
-    text = models.TextField("متن نظر")
-    image = models.ImageField("تصویر", upload_to='testimonials/', blank=True, null=True)
-    is_approved = models.BooleanField("تأیید شده", default=False)
+# class Testimonial(models.Model):
+#     name = models.CharField("نام", max_length=200)
+#     role = models.CharField("نقش", max_length=200)
+#     text = models.TextField("متن نظر")
+#     image = models.ImageField("تصویر", upload_to='testimonials/', blank=True, null=True)
+#     is_approved = models.BooleanField("تأیید شده", default=False)
 
-    class Meta:
-        verbose_name = "نظر دانش‌آموز"
-        verbose_name_plural = "نظرات دانش‌آموزان"
+#     class Meta:
+#         verbose_name = "نظر دانش‌آموز"
+#         verbose_name_plural = "نظرات دانش‌آموزان"
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
 class SocialLink(models.Model):
@@ -90,6 +90,7 @@ class ContactMessage(models.Model):
     message = models.TextField("پیام")
     created_at = models.DateTimeField("تاریخ ارسال", auto_now_add=True)
     is_read = models.BooleanField("خوانده شده", default=False)
+    phone = models.CharField("شماره تلفن", max_length=20, blank=False, null=False, default='')
 
     class Meta:
         verbose_name = "پیام تماس"
@@ -97,21 +98,6 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class PlacementTestSubmission(models.Model):
-    name = models.CharField("نام", max_length=200)
-    email = models.EmailField("ایمیل")
-    score = models.IntegerField("نمره")
-    level_result = models.CharField("نتیجه سطح", max_length=50)
-    created_at = models.DateTimeField("تاریخ", auto_now_add=True)
-
-    class Meta:
-        verbose_name = "تست تعیین سطح"
-        verbose_name_plural = "تست‌های تعیین سطح"
-
-    def __str__(self):
-        return f"{self.name}"
 
 
 class Hero(models.Model):

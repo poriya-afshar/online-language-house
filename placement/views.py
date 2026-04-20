@@ -7,11 +7,6 @@ from .models import PlacementQuestion, PlacementResult, PlacementTestSettings
 
 
 def placement_test(request):
-    """نمایش صفحهٔ آزمون (بدون ارسال سوال‌ها به‌صورت ساکن)."""
-
-    # just check whether at least one active question with at least one option
-    # exists so that we can disable the button or show a warning. the real list
-    # is fetched later via AJAX.
     from django.db.models import Count
     has_questions = PlacementQuestion.objects.filter(is_active=True)
     # only count questions that actually have options defined
@@ -21,7 +16,6 @@ def placement_test(request):
     duration = settings_obj.total_duration_minutes if settings_obj else 10
 
     context = {
-        # JSON payload removed from template, questions will be loaded with JS
         "duration_seconds": duration * 60,
         "no_questions": not has_questions,
     }
@@ -53,17 +47,46 @@ def get_questions(request):
     })
 
 
+# @require_POST
+# def save_placement_result(request):
+#     try:
+#         data = json.loads(request.body)
+#         PlacementResult.objects.create(
+#             name=data.get("name", "Unknown"),
+#             phone=data.get("phone", ""),         
+#             level=data.get("level", "A1"),
+#             score=int(data.get("score", 0)),
+#             total=int(data.get("total", 0)),
+#             time_seconds=int(data.get("time_seconds", 0))
+#         )
+#         return JsonResponse({"status": "success"})
+#     except Exception as e:
+#         return JsonResponse({"status": "error", "message": str(e)}, status=400)
+
+
+
+
 @require_POST
 def save_placement_result(request):
+    print("=== save_placement_result called ===")  # این خط را اضافه کن
     try:
         data = json.loads(request.body)
-        PlacementResult.objects.create(
+        print("Received data:", data)  # کل دیتا رو چاپ کن
+        
+        # اطمینان از وجود phone
+        phone_value = data.get("phone", "")
+        print("Phone value:", phone_value)
+        
+        obj = PlacementResult.objects.create(
             name=data.get("name", "Unknown"),
+            phone=phone_value,
             level=data.get("level", "A1"),
             score=int(data.get("score", 0)),
             total=int(data.get("total", 0)),
             time_seconds=int(data.get("time_seconds", 0))
         )
+        print("Created object with phone:", obj.phone)
         return JsonResponse({"status": "success"})
     except Exception as e:
+        print("ERROR:", str(e))  # چاپ خطا در ترمینال
         return JsonResponse({"status": "error", "message": str(e)}, status=400)
