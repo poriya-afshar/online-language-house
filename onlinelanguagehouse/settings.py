@@ -39,7 +39,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # My Add
-    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
@@ -99,14 +98,6 @@ LANGUAGE_CODE = 'fa'
 USE_I18N = True
 USE_L10N = True
 
-LANGUAGES = [
-    ('fa', 'Persian'),
-    ('en', 'English'),
-]
-
-LOCALE_PATHS = [
-    BASE_DIR / 'locale',
-]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 

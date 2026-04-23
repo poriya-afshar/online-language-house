@@ -80,42 +80,13 @@ nav {
     color: var(--gold);
 }
 
-/* HERO - Full bleed with image bg */
+/* HERO - بدون تصویر بنر (فقط متن) */
 .course-hero {
-    min-height: 80vh;
+    padding: 120px 80px 40px;
     position: relative;
-    display: grid;
-    align-items: flex-end;
-    padding: 120px 80px 80px;
-    overflow: hidden;
-}
-
-.hero-image {
-    position: absolute;
-    inset: 0;
-}
-
-.hero-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.hero-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-            to bottom,
-            rgba(13, 13, 13, 0.3) 0%,
-            rgba(13, 13, 13, 0.5) 40%,
-            rgba(13, 13, 13, 0.92) 100%
-    );
 }
 
 .hero-content {
-    position: relative;
-    z-index: 1;
     max-width: 750px;
 }
 
@@ -154,7 +125,7 @@ nav {
 }
 
 .tag {
-    font-size: 0.65rem;
+    font-size: 1rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     padding: 6px 14px;
@@ -197,20 +168,20 @@ nav {
     animation: fadeUp 0.6s 0.3s ease both;
 }
 
-/* FLOATING ENROLL CARD */
+/* LAYOUT (دو ستونی) */
 .layout {
     display: grid;
     grid-template-columns: 1fr 360px;
     gap: 60px;
     max-width: 1280px;
     margin: 0 auto;
-    padding: 80px 80px 100px;
+    padding: 40px 80px 100px;
     align-items: start;
 }
 
-/* LEFT content */
+/* محتوای سمت چپ */
 .section-label {
-    font-size: 0.68rem;
+    font-size: 1rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--gold);
@@ -236,7 +207,7 @@ nav {
     margin-bottom: 60px;
 }
 
-/* WHAT YOU LEARN */
+/* یادگیری */
 .learn-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -269,7 +240,7 @@ nav {
     flex-shrink: 0;
 }
 
-/* SYLLABUS */
+/* سرفصل‌ها */
 .syllabus-list {
     display: flex;
     flex-direction: column;
@@ -324,7 +295,7 @@ nav {
     letter-spacing: 0.05em;
 }
 
-/* TEACHER MINI */
+/* استاد مینیاتوری */
 .teacher-mini {
     display: flex;
     align-items: center;
@@ -372,7 +343,7 @@ nav {
     margin-top: 6px;
 }
 
-/* SIDEBAR / ENROLL CARD */
+/* کارت ثبت نام (سمت راست) */
 .enroll-card {
     position: sticky;
     top: 100px;
@@ -384,8 +355,10 @@ nav {
 
 .enroll-img {
     width: 100%;
-    height: 200px;
+    height: auto;
+    max-height: 280px;
     object-fit: cover;
+    display: block;
 }
 
 .enroll-body {
@@ -491,7 +464,7 @@ nav {
     font-weight: 500;
 }
 
-/* REVIEWS */
+/* نظرات */
 .reviews-section {
     margin-top: 60px;
 }
@@ -560,7 +533,7 @@ nav {
     color: rgba(245, 240, 232, 0.6);
 }
 
-/* MINI FOOTER */
+/* فوتر کوچک */
 .mini-footer {
     background: rgba(5, 5, 5, 0.98);
     border-top: 1px solid var(--glass-border);
@@ -578,7 +551,7 @@ nav {
     opacity: 0.8;
 }
 
-/* ANIMATIONS */
+/* انیمیشن‌ها */
 @keyframes fadeUp {
     from {
         opacity: 0;
@@ -601,20 +574,19 @@ nav {
     transform: translateY(0);
 }
 
-/* RESPONSIVE */
+/* واکنش‌گرایی */
 @media (max-width: 980px) {
     nav {
         padding: 16px 24px;
     }
 
     .course-hero {
-        padding: 100px 24px 60px;
-        min-height: 60vh;
+        padding: 100px 24px 30px;
     }
 
     .layout {
         grid-template-columns: 1fr;
-        padding: 60px 24px;
+        padding: 40px 24px 60px;
         gap: 40px;
     }
 
@@ -631,5 +603,9 @@ nav {
         flex-direction: column;
         gap: 10px;
         text-align: center;
+    }
+
+    .enroll-img {
+        max-height: 220px;
     }
 }

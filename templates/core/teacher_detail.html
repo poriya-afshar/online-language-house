@@ -1,8 +1,7 @@
 {% load static %}
 {% load i18n %}
 <!DOCTYPE html>
-<html lang="{{ request.LANGUAGE_CODE }}"
-      dir="{% if request.LANGUAGE_CODE == 'fa' %}rtl{% else %}ltr{% endif %}">
+<html lang="fa" dir="rtl" class="">
 
 <head>
     <meta charset="UTF-8">
@@ -11,84 +10,78 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Vazirmatn:wght@300;400;500;700;900&display=swap"
-          rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Vazirmatn:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/teacher_detail.css' %}">
 </head>
+
 <body>
 
-<!-- NAVBAR -->
-<nav>
-    <a href="{% url 'home' %}" class="nav-logo">Online<span>Language</span>House</a>
-    <a href="{% url 'home' %}#teachers" class="nav-back">
-        <i class="fa fa-arrow-right"></i>
-        {% trans "بازگشت به اساتید" %}
-    </a>
-</nav>
+    <!-- NAVBAR -->
+    <nav>
+        <a href="{% url 'home' %}" class="nav-logo">Online<span>Language</span>House</a>
+        <a href="{% url 'home' %}#teachers" class="nav-back">
+            <i class="fa fa-arrow-right"></i>
+            {% trans "بازگشت به اساتید" %}
+        </a>
+    </nav>
 
-<!-- HERO -->
-<section class="teacher-hero">
-    <div class="hero-glow"></div>
+    <!-- HERO -->
+    <section class="teacher-hero">
+        <div class="hero-glow"></div>
 
-    <!-- Info -->
-    <div class="teacher-info">
-        <div class="breadcrumb">
-            <a href="{% url 'home' %}">{% trans "خانه" %}</a>
-            <span class="sep">✦</span>
-            <a href="{% url 'home' %}#teachers">{% trans "اساتید" %}</a>
-            <span class="sep">✦</span>
-            <span>{{ teacher.name }}</span>
-        </div>
+        <!-- Info -->
+        <div class="teacher-info">
+            <div class="breadcrumb">
+                <a href="{% url 'home' %}">{% trans "خانه" %}</a>
+                <span class="sep">✦</span>
+                <a href="{% url 'home' %}#teachers">{% trans "اساتید" %}</a>
+                <span class="sep">✦</span>
+                <span>{{ teacher.name }}</span>
+            </div>
 
-        <div class="expertise-badge">{{ teacher.expertise }}</div>
+            <div class="expertise-badge">{{ teacher.expertise }}</div>
 
-        <h1 class="teacher-name">{{ teacher.name }}</h1>
+            <h1 class="teacher-name">{{ teacher.name }}</h1>
 
-        <!-- <p class="teacher-tagline">
-            {{ teacher.bio|truncatewords:25 }}
-        </p> -->
+            <p class="teacher-tagline">
+                {{ teacher.bio|truncatewords:25 }}
+            </p>
 
-        <div class="teacher-meta-row">
-            {% if teacher.experience_years %}
+            <div class="teacher-meta-row">
+                {% if teacher.experience_years %}
                 <div class="meta-item">
                     <!-- <div class="icon"><i class="fa fa-clock"></i></div> -->
                     <span>{{ teacher.experience_years }} {% trans "سال تجربه" %}</span>
                 </div>
-            {% endif %}
-            {% if teacher.country %}
+                {% endif %}
+                {% if teacher.country %}
                 <div class="meta-item">
                     <div class="icon"><i class="fa fa-globe"></i></div>
                     <span>{{ teacher.country }}</span>
                 </div>
-            {% endif %}
-            {% if teacher.courses.count %}
+                {% endif %}
+                {% if teacher.courses.count %}
                 <div class="meta-item">
                     <div class="icon"><i class="fa fa-book"></i></div>
                     <span>{{ teacher.courses.count }} {% trans "دوره فعال" %}</span>
                 </div>
-            {% endif %}
+                {% endif %}
+            </div>
+
         </div>
 
-        <!-- <div class="teacher-actions">
-            <a href="#courses-section" class="btn-primary">
-                <i class="fa fa-play"></i>
-                {% trans "مشاهده دوره‌ها" %}
-            </a>
-            <a href="{% url 'home' %}#contact" class="btn-ghost">
-                <i class="fa fa-envelope"></i>
-                {% trans "تماس" %}
-            </a>
-        </div> -->
-    </div>
+        <!-- Visual -->
+        <div class="teacher-visual">
+            <div class="img-decoration"></div>
+            <div class="img-decoration-2"></div>
+            <div class="img-frame">
+                <img src="{% if teacher.image %}{{ teacher.image.url }}{% else %}{% static 'images/default-teacher.jpg' %}{% endif %}"
+                    alt="{{ teacher.name }}">
 
-    <!-- Visual -->
-    <div class="teacher-visual">
-        <div class="img-decoration"></div>
-        <div class="img-decoration-2"></div>
-        <div class="img-frame">
-            <img src="{{ teacher.image.url }}" alt="{{ teacher.name }}">
-            {% if teacher.rating %}
+                {% if teacher.rating %}
                 <div class="rating-pill">
                     <div>
                         <div class="rating-stars">★★★★★</div>
@@ -96,94 +89,94 @@
                     </div>
                     <div class="rating-num">{{ teacher.rating }}</div>
                 </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
 
-<!-- MAIN CONTENT -->
-<div class="content-wrap">
+    <!-- MAIN CONTENT -->
+    <div class="content-wrap">
 
-    <!-- Left: Bio + Skills -->
-    <div>
-        <div class="reveal">
-            <div class="section-label">✦ {% trans "درباره استاد" %}</div>
-            <h2 class="section-heading">{% trans "بیوگرافی" %}</h2>
-            <p class="bio-text">{{ teacher.bio }}</p>
-        </div>
+        <!-- Left: Bio + Skills -->
+        <div>
+            <div class="reveal">
+                <div class="section-label">✦ {% trans "درباره استاد" %}</div>
+                <h2 class="section-heading">{% trans "بیوگرافی" %}</h2>
+                <p class="bio-text">{{ teacher.bio }}</p>
+            </div>
 
-        {% if teacher.skills %}
+            {% if teacher.skills %}
             <div class="reveal" style="margin-top: 60px;">
                 <div class="section-label">✦ {% trans "تخصص‌ها" %}</div>
                 <h2 class="section-heading">{% trans "مهارت‌ها" %}</h2>
                 <div class="skills-list">
                     {% for skill in teacher.skills.all %}
-                        <span class="skill-tag">{{ skill.name }}</span>
+                    <span class="skill-tag">{{ skill.name }}</span>
                     {% endfor %}
                 </div>
             </div>
-        {% endif %}
-    </div>
+            {% endif %}
+        </div>
 
-    <!-- Right: Sidebar -->
-    <div class="sidebar reveal">
-        <div class="sidebar-card">
-            <div class="sidebar-title">{% trans "اطلاعات استاد" %}</div>
-            {% if teacher.expertise %}
+        <!-- Right: Sidebar -->
+        <div class="sidebar reveal">
+            <div class="sidebar-card">
+                <div class="sidebar-title">{% trans "اطلاعات استاد" %}</div>
+                {% if teacher.expertise %}
                 <div class="info-row">
                     <span class="key">{% trans "تخصص" %}</span>
                     <span class="val">{{ teacher.expertise }}</span>
                 </div>
-            {% endif %}
-            {% if teacher.country %}
+                {% endif %}
+                {% if teacher.country %}
                 <div class="info-row">
                     <span class="key">{% trans "کشور" %}</span>
                     <span class="val">{{ teacher.country }}</span>
                 </div>
-            {% endif %}
-            {% if teacher.language %}
+                {% endif %}
+                {% if teacher.language %}
                 <div class="info-row">
                     <span class="key">{% trans "زبان تدریس" %}</span>
                     <span class="val">{{ teacher.language }}</span>
                 </div>
-            {% endif %}
-            {% if teacher.experience_years %}
+                {% endif %}
+                {% if teacher.experience_years %}
                 <div class="info-row">
                     <span class="key">{% trans "تجربه" %}</span>
                     <span class="val">{{ teacher.experience_years }} {% trans "سال" %}</span>
                 </div>
-            {% endif %}
-        </div>
+                {% endif %}
+            </div>
 
-        {% if teacher.instagram or teacher.linkedin or teacher.twitter %}
+            {% if teacher.instagram or teacher.linkedin or teacher.twitter %}
             <div class="sidebar-card">
                 <div class="sidebar-title">{% trans "شبکه‌های اجتماعی" %}</div>
                 <div class="social-list">
                     {% if teacher.instagram %}
-                        <a href="{{ teacher.instagram }}" target="_blank" class="social-item">
-                            <i class="fab fa-instagram"></i> Instagram
-                        </a>
+                    <a href="{{ teacher.instagram }}" target="_blank" class="social-item">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
                     {% endif %}
                     {% if teacher.linkedin %}
-                        <a href="{{ teacher.linkedin }}" target="_blank" class="social-item">
-                            <i class="fab fa-linkedin"></i> LinkedIn
-                        </a>
+                    <a href="{{ teacher.linkedin }}" target="_blank" class="social-item">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
                     {% endif %}
                     {% if teacher.twitter %}
-                        <a href="{{ teacher.twitter }}" target="_blank" class="social-item">
-                            <i class="fab fa-twitter"></i> Twitter
-                        </a>
+                    <a href="{{ teacher.twitter }}" target="_blank" class="social-item">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </a>
                     {% endif %}
                 </div>
             </div>
-        {% endif %}
+            {% endif %}
+        </div>
+
     </div>
 
-</div>
-
-<!-- COURSES BY THIS TEACHER -->
-{% if teacher.courses.exists %}
+    <!-- COURSES BY THIS TEACHER -->
+    {% if teacher.courses.exists %}
     <div class="teacher-courses-section" id="courses-section">
         <div class="inner">
             <div class="reveal">
@@ -192,36 +185,44 @@
             </div>
             <div class="courses-row">
                 {% for course in teacher.courses.all %}
-                    <div class="mini-course-card reveal">
-                        {% if course.image %}
-                            <img src="{{ course.image.url }}" alt="{{ course.title }}">
-                        {% else %}
-                            <div class="no-img-placeholder"></div>
-                        {% endif %}
-                        <div class="mini-course-body">
-                            <div class="mini-tags">
-                                <span class="tag">{{ course.level }}</span>
-                                <span class="tag">{{ course.duration }}</span>
-                            </div>
-                            <h3 class="mini-course-title">{{ course.title }}</h3>
-                            <a href="{% url 'course_detail' course.id %}" class="mini-course-link">
-                                {% trans "جزئیات دوره" %} <i class="fa fa-arrow-left fa-xs"></i>
-                            </a>
+                <div class="mini-course-card reveal">
+
+                    <img src="{% if course.image %}{{ course.image.url }}{% else %}{% static 'images/default-course.jpg' %}{% endif %}"
+                        alt="{{ course.title }}">
+
+                    <!-- {% if course.image %}
+                    <img src="{{ course.image.url }}" alt="{{ course.title }}">
+                    {% else %}
+                    <div class="no-img-placeholder"></div>
+                    {% endif %} -->
+
+
+
+                    <div class="mini-course-body">
+                        <div class="mini-tags">
+                            <span class="tag">{{ course.level }}</span>
+                            <span class="tag">{{ course.duration }}</span>
                         </div>
+                        <h3 class="mini-course-title">{{ course.title }}</h3>
+                        <a href="{% url 'course_detail' course.id %}" class="mini-course-link">
+                            {% trans "جزئیات دوره" %} <i class="fa fa-arrow-left fa-xs"></i>
+                        </a>
                     </div>
+                </div>
                 {% endfor %}
             </div>
         </div>
     </div>
-{% endif %}
+    {% endif %}
 
-<!-- MINI FOOTER -->
-<footer class="mini-footer">
-    <a href="{% url 'home' %}">OnlineLanguageHouse</a>
-    <span>© 2026 — {% trans "تمام حقوق محفوظ است" %}</span>
-</footer>
+    <!-- MINI FOOTER -->
+    <footer class="mini-footer">
+        <br>
+        <br>
+    </footer>
 
-<script src="{% static 'js/teacher_detail.js' %}"></script>
+    <script src="{% static 'js/teacher_detail.js' %}"></script>
 
 </body>
+
 </html>

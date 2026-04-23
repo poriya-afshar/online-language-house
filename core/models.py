@@ -1,4 +1,5 @@
 from django.db import models
+from urllib.parse import urlparse
 
 
 class Course(models.Model):
@@ -15,7 +16,7 @@ class Course(models.Model):
     access = models.CharField("دسترسی", max_length=200, default="موبایل + دسکتاپ")
     # ------------------------------------
     is_active = models.BooleanField("فعال باشد", default=True)
-
+    
     class Meta:
         verbose_name = "دوره"
         verbose_name_plural = "دوره‌ها"
@@ -23,6 +24,10 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        return '/static/images/default-course.jpg'
 
 class Teacher(models.Model):
     name = models.CharField("نام استاد", max_length=200)
@@ -40,7 +45,11 @@ class Teacher(models.Model):
 
     def __str__(self):
         return self.name
-
+    
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        return '/static/images/default-teacher.jpg'
 
 class About(models.Model):
     title = models.CharField("عنوان", max_length=200)
@@ -50,30 +59,15 @@ class About(models.Model):
 
     class Meta:
         verbose_name = "درباره"
-        verbose_name_plural = "بخش درباره"
+        verbose_name_plural = " بخش درباره پایین سایت(فوتر)"
 
     def __str__(self):
         return "About"
 
 
-# class Testimonial(models.Model):
-#     name = models.CharField("نام", max_length=200)
-#     role = models.CharField("نقش", max_length=200)
-#     text = models.TextField("متن نظر")
-#     image = models.ImageField("تصویر", upload_to='testimonials/', blank=True, null=True)
-#     is_approved = models.BooleanField("تأیید شده", default=False)
-
-#     class Meta:
-#         verbose_name = "نظر دانش‌آموز"
-#         verbose_name_plural = "نظرات دانش‌آموزان"
-
-#     def __str__(self):
-#         return self.name
-
-
 class SocialLink(models.Model):
-    name = models.CharField("نام شبکه", max_length=100)
-    icon_class = models.CharField("کلاس آیکن", max_length=100)
+    name = models.CharField("نام شبکه", max_length=100, blank=True, help_text="اختیاری - در صورت خالی بودن از روی لینک تشخیص داده می‌شود")
+    icon_class = models.CharField("کلاس آیکن", max_length=100, blank=True, help_text="اختیاری - در صورت خالی بودن از روی لینک تشخیص داده می‌شود")
     url = models.URLField("لینک")
 
     class Meta:
@@ -81,7 +75,47 @@ class SocialLink(models.Model):
         verbose_name_plural = "شبکه‌های اجتماعی"
 
     def __str__(self):
-        return self.name
+        return self.get_social_name()
+
+    def get_social_name(self):
+        if self.name:
+            return self.name
+        return self._detect_social_info()[0]
+
+    def get_icon_class(self):
+        if self.icon_class:
+            return self.icon_class
+        return self._detect_social_info()[1]
+
+    def _detect_social_info(self):
+        """تشخیص نام و آیکون بر اساس دامنه لینک"""
+        domain = urlparse(self.url).netloc.lower()
+        
+        if 'instagram.com' in domain:
+            return ('اینستاگرام', 'fab fa-instagram')
+        elif 'telegram.org' in domain or 't.me' in domain:
+            return ('تلگرام', 'fab fa-telegram')
+        elif 'whatsapp.com' in domain or 'wa.me' in domain:
+            return ('واتساپ', 'fab fa-whatsapp')
+        elif 'twitter.com' in domain or 'x.com' in domain:
+            return ('توییتر', 'fab fa-twitter')
+        elif 'linkedin.com' in domain:
+            return ('لینکدین', 'fab fa-linkedin')
+        elif 'youtube.com' in domain or 'youtu.be' in domain:
+            return ('یوتیوب', 'fab fa-youtube')
+        elif 'facebook.com' in domain:
+            return ('فیسبوک', 'fab fa-facebook')
+        elif 'github.com' in domain:
+            return ('گیت‌هاب', 'fab fa-github')
+        elif 'pinterest.com' in domain:
+            return ('پینترست', 'fab fa-pinterest')
+        elif 'tiktok.com' in domain:
+            return ('تیک‌تاک', 'fab fa-tiktok')
+        else:
+            return ('سایر', 'fas fa-link')
+
+
+
 
 
 class ContactMessage(models.Model):
@@ -111,7 +145,9 @@ class Hero(models.Model):
         verbose_name_plural = "بخش هدر سایت"
 
     def __str__(self):
-        return "Hero"
+        return self.title_line1 if self.title_line1 else "Hero"
+        # return "Hero"
+        
 
 
 

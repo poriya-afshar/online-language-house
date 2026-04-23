@@ -34,11 +34,17 @@ class TeacherAdmin(admin.ModelAdmin):
 class AboutAdmin(admin.ModelAdmin):
     list_display = ("title",)
 
-
 @admin.register(SocialLink)
 class SocialLinkAdmin(admin.ModelAdmin):
-    list_display = ("name", "url", "icon_class")
-    search_fields = ("name",)
+    list_display = ('get_social_name', 'url')
+    fields = ('url', 'name')  # فقط لینک و نام اختیاری نمایش داده شود
+    readonly_fields = ('get_icon_class',)  # فقط برای نمایش (اختیاری)
+
+    
+# @admin.register(SocialLink)
+# class SocialLinkAdmin(admin.ModelAdmin):
+#     list_display = ("name", "url", "icon_class")
+#     search_fields = ("name",)
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):

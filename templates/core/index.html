@@ -1,8 +1,7 @@
 {% load static %}
 {% load i18n %}
 <!DOCTYPE html>
-<html lang="{{ request.LANGUAGE_CODE }}" dir="{% if request.LANGUAGE_CODE == 'fa' %}rtl{% else %}ltr{% endif %}"
-    class="">
+<html lang="fa" dir="rtl" class="">
 
 <head>
     <meta charset="UTF-8">
@@ -25,42 +24,42 @@
     <nav id="navbar">
         <div class="nav-logo">Online<span>Language</span>House</div>
         <div class="nav-controls">
-            <form action="{% url 'set_language' %}" method="post">
-                {% csrf_token %}
-                {# <select name="language" onchange="this.form.submit()" class="lang-select">#}
-                    {# <option value="fa" {% if request.LANGUAGE_CODE=='fa' %}selected{% endif %}>FA</option>#}
-                    {# <option value="en" {% if request.LANGUAGE_CODE=='en' %}selected{% endif %}>EN</option>#}
-                    {# </select>#}
-            </form>
+            <button class="hamburger" id="hamburger" aria-label="منو">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#hero" class="nav-link" data-target="hero">{% trans "خانه" %}</a></li>
+                <li><a href="#courses" class="nav-link" data-target="courses">{% trans "دوره‌ها" %}</a></li>
+                <li><a href="#teachers" class="nav-link" data-target="teachers">{% trans "اساتید" %}</a></li>
+                <li><a href="#placement" class="nav-link" data-target="placement">{% trans "تعیین سطح" %}</a></li>
+            </ul>
+            <!-- فرم انتخاب زبان حذف شد -->
         </div>
     </nav>
 
+    <!-- بقیه قسمت‌ها بدون تغییر می‌ماند ... (همانند قبل) -->
     <!-- ============= HERO ============= -->
     <section id="hero">
-
         {% if hero and hero.background_image %}
-        <div class="hero-bg" style="background-image:url('{{ hero.background_image.url }}');
-                     background-size:cover;
-                     background-position:center;">
+        <div class="hero-bg"
+            style="background-image:url('{{ hero.background_image.url }}'); background-size:cover; background-position:center;">
         </div>
         {% else %}
         <div class="hero-bg"></div>
         {% endif %}
-
         <div style="position:relative; z-index:1;">
-
             <div class="hero-label">✦ آموزشگاه آنلاین زبان</div>
-
             <h1 class="display hero-title">
-                {% if hero %}
+                {% if hero.title_line1 %}
                 {{ hero.title_line1 }}<br>
-                <span class="accent">{{ hero.title_highlight }}</span>
+                <span class="accent">{{ hero.title_highlight|default:"" }}</span>
                 {% else %}
-                آینده زبان خود را<br>
-                <span class="accent">روشن کنید</span>
+                <br>
+                <span class="accent"></span>
                 {% endif %}
             </h1>
-
             <p class="hero-sub">
                 {% if hero %}
                 {{ hero.subtitle }}
@@ -68,35 +67,28 @@
                 دوره‌های حرفه‌ای با اساتید بین‌المللی — تجربه‌ای متفاوت از یادگیری زبان
                 {% endif %}
             </p>
-
         </div>
-
     </section>
 
     <!-- ============= STATS ============= -->
     <div class="stats-bar">
         {% if stats %}
-
         <div class="stat-item reveal">
             <div class="number">{{ stats.students }}</div>
             <div class="label">{% trans "دانش‌آموز فعال" %}</div>
         </div>
-
         <div class="stat-item reveal">
             <div class="number">{{ stats.courses }}</div>
             <div class="label">{% trans "دوره تخصصی" %}</div>
         </div>
-
         <div class="stat-item reveal">
             <div class="number">{{ stats.teachers }}</div>
             <div class="label">{% trans "استاد بین‌المللی" %}</div>
         </div>
-
         <div class="stat-item reveal">
             <div class="number">{{ stats.satisfaction }}</div>
             <div class="label">{% trans "رضایت دانش‌آموزان" %}</div>
         </div>
-
         {% endif %}
     </div>
 
@@ -108,12 +100,35 @@
                 <h2 class="display section-title">{% trans "دوره‌های ما" %}</h2>
                 <p class="section-subtitle">{% trans "از مبتدی تا پیشرفته — با ساختاری علمی و استادانی باتجربه" %}</p>
             </div>
-
             <div class="courses-grid">
+                {% for course in courses %}
+                <a href="{% url 'course_detail' course.id %}" class="course-card reveal"
+                    style="transition-delay:{{ forloop.counter0|divisibleby:3 }}0.1s; text-decoration: none; display: block;">
+                    <div class="course-img-wrap">
+                        <img src="{% if course.image %}{{ course.image.url }}{% else %}{% static 'images/default-course.jpg' %}{% endif %}"
+                            alt="{{ course.title }}">
+                    </div>
+                    <div class="course-body">
+                        <div class="course-tags">
+                            <span class="tag">{{ course.level }}</span>
+                            <span class="tag teal">{{ course.duration }}</span>
+                        </div>
+                        <h3 class="course-title">{{ course.title }}</h3>
+                        <p class="course-desc">{{ course.description|truncatewords:20 }}</p>
+                        <!-- لینک جزئیات حذف شد -->
+                    </div>
+                </a>
+                {% empty %}
+                <p style="color:rgba(245,240,232,0.4);">{% trans "دوره‌ای ثبت نشده است." %}</p>
+                {% endfor %}
+            </div>
+
+            <!-- <div class="courses-grid">
                 {% for course in courses %}
                 <div class="course-card reveal" style="transition-delay:{{ forloop.counter0|divisibleby:3 }}0.1s">
                     <div class="course-img-wrap">
-                        <img src="{{ course.image.url }}" alt="{{ course.title }}">
+                        <img src="{% if course.image %}{{ course.image.url }}{% else %}{% static 'images/default-course.jpg' %}{% endif %}"
+                            alt="{{ course.title }}">
                     </div>
                     <div class="course-body">
                         <div class="course-tags">
@@ -130,7 +145,9 @@
                 {% empty %}
                 <p style="color:rgba(245,240,232,0.4);">{% trans "دوره‌ای ثبت نشده است." %}</p>
                 {% endfor %}
-            </div>
+            </div> -->
+
+
         </div>
     </section>
 
@@ -144,23 +161,18 @@
                     {% trans "متخصصانی از سراسر جهان که یادگیری را لذت‌بخش می‌کنند" %}
                 </p>
             </div>
-
             <div class="teachers-grid">
                 {% for teacher in teachers %}
                 <a href="{% url 'teacher_detail' teacher.id %}" class="teacher-card reveal">
                     <div class="teacher-img-wrap">
-                        {% if teacher.image %}
-                        <img src="{{ teacher.image.url }}" alt="{{ teacher.name }}">
-                        {% endif %}
+                        <img src="{% if teacher.image %}{{ teacher.image.url }}{% else %}{% static 'images/default-teacher.jpg' %}{% endif %}"
+                            alt="{{ teacher.name }}">
                     </div>
-
                     <h3 class="teacher-name">{{ teacher.name }}</h3>
                     <div class="teacher-exp">{{ teacher.expertise }}</div>
                     <p class="teacher-bio">{{ teacher.bio|truncatewords:15 }}</p>
-
                     <div class="course-link">
-                        {% trans "جزئیات استاد" %}
-                        <i class="fa fa-arrow-left"></i>
+                        <br>
                     </div>
                 </a>
                 {% empty %}
@@ -172,10 +184,24 @@
         </div>
     </section>
 
-    <!-- ============= PLACEMENT TEST SECTION (جایگزین مدارک) ============= -->
+    <!-- ============= PLACEMENT TEST SECTION ============= -->
     <section id="placement">
         <div class="placement-bg"></div>
         <div class="placement-inner">
+            <div class="custom-icon reveal">
+                <div class="icon-circle">
+                    <div class="rocket-tilted">
+                        <div class="rocket-body">
+                            <div class="rocket-nose"></div>
+                            <div class="rocket-window"></div>
+                            <div class="fin-left"></div>
+                            <div class="fin-right"></div>
+                        </div>
+                        <div class="flame"></div>
+                        <div class="smoke-cloud"></div>
+                    </div>
+                </div>
+            </div>
             <div class="section-header reveal" style="text-align:center;">
                 <div class="section-label">✦ تعیین سطح زبان</div>
                 <h2 class="display section-title">سطح خود را بسنجید</h2>
@@ -183,9 +209,6 @@
                     با شرکت در تست تعیین سطح دقیق و رایگان، مسیر یادگیری شخصی‌سازی شده را شروع کنید.
                 </p>
             </div>
-            <!-- <div class="placement-icon reveal">
-                <i class="fa fa-pen-ruler"></i>
-            </div> -->
             <div class="reveal" style="margin-top: 30px;">
                 <a href="{% url 'placement_test' %}" class="btn-primary" style="display: inline-block;">
                     <span>شروع تست رایگان <i class="fa fa-arrow-left"></i></span>
@@ -197,8 +220,6 @@
     <!-- ============= FOOTER ============= -->
     <footer>
         <div class="footer-grid">
-
-            <!-- Contact -->
             <div>
                 <h3 class="footer-title">{% trans "تماس با ما" %}</h3>
                 <form method="post" class="contact-form">
@@ -216,56 +237,75 @@
                 {% endfor %}
                 {% endif %}
             </div>
-
-            <!-- Brand -->
             <div class="brand-block">
                 <div class="brand-name">Online<span>Language</span>House</div>
-                <p style="font-size:0.75rem; color:rgba(245,240,232,0.4); letter-spacing:0.1em; margin-bottom:0;">—
-                    آموزش
-                    جهانی، تجربه محلی</p>
-
+                <p style="font-size:1rem; color:rgba(245,240,232,0.4); letter-spacing:0.1em; margin-bottom:0;">—
+                    آموزش جهانی، تجربه محلی</p>
                 <div class="social-row">
                     {% for social in social_links %}
-                    <a href="{{ social.url }}" target="_blank" class="social-link" title="{{ social.name }}">
-                        <i class="{{ social.icon_class }}"></i>
+                    <a href="{{ social.url }}" target="_blank" class="social-link" title="{{ social.get_social_name }}">
+                        <i class="{{ social.get_icon_class }}"></i>
                     </a>
                     {% endfor %}
+                
                 </div>
-
                 {% if about %}
                 <div class="about-section">
-
-                    <h4 class="footer-title">
-                        {{ about.title }}
-                    </h4>
-
-                    <p class="about-text">
-                        {{ about.description }}
-                    </p>
-
+                    <h4 class="footer-title">{{ about.title }}</h4>
+                    <p class="about-text">{{ about.description }}</p>
                     {% if about.image %}
                     <img src="{{ about.image.url }}" style="width:120px; border-radius:12px; margin:20px 0;">
                     {% endif %}
-
-                    <div style="font-size:0.75rem; color:rgba(245,240,232,0.4);">
+                    <div style="font-size:1rem; color:rgba(245,240,232,0.4);">
                         {% trans "تأسیس:" %} {{ about.founded_year }}
                     </div>
-
                 </div>
                 {% endif %}
             </div>
-
         </div>
-
         <div class="footer-bottom">
-            <span> OnlineLanguageHouse. All rights reserved</span>
+            <br>
+            <br>
         </div>
     </footer>
 
-    <!-- Back to top -->
     <button class="back-top" id="backTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
 
     <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        (function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId && targetId !== '#') {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            history.pushState(null, null, targetId);
+                        }
+                    }
+                });
+            });
+            const sections = document.querySelectorAll('section[id]');
+            const observerOptions = { threshold: 0.3 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const activeId = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('data-target') === activeId) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+            sections.forEach(section => observer.observe(section));
+        })();
+    </script>
 </body>
 
 </html>

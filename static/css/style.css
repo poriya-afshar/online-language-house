@@ -1,3 +1,134 @@
+/* اطمینان از نمایش منو */
+.nav-menu {
+    display: flex !important;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-inline-end: 2rem;
+}
+
+.nav-menu li {
+    display: inline-block;
+}
+
+.nav-menu li a {
+    color: var(--cream, #f5f0e8);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    transition: color 0.3s;
+}
+
+.nav-menu li a:hover,
+.nav-menu li a.active {
+    color: var(--gold, #c9a84c) !important;
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        gap: 1rem;
+        margin-inline-end: 1rem;
+    }
+
+    .nav-menu li a {
+        font-size: 0.75rem;
+    }
+}
+
+/* ============= HAMBURGER MENU ============= */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 110;
+}
+
+.hamburger span {
+    width: 100%;
+    height: 3px;
+    background-color: var(--cream);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* حالت باز (تبدیل به X) */
+.hamburger.open span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+/* responsive: حداکثر عرض 768px */
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 70%;
+        height: calc(100vh - 70px);
+        background: rgba(13, 13, 13, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        transition: left 0.4s ease;
+        z-index: 100;
+        margin: 0;
+        padding: 2rem 1rem;
+        border-right: 1px solid var(--glass-border);
+    }
+
+    .nav-menu.open {
+        left: 0;
+    }
+
+    .nav-menu li a {
+        font-size: 1.2rem;
+    }
+
+    /* جلوگیری از اسکرول پشت منو وقتی باز است */
+    body.menu-open {
+        overflow: hidden;
+    }
+}
+
+@media (min-width: 769px) {
+    .nav-menu {
+        display: flex !important;
+        position: static;
+        width: auto;
+        height: auto;
+        background: none;
+        flex-direction: row;
+        gap: 2rem;
+        padding: 0;
+        border: none;
+        backdrop-filter: none;
+    }
+
+    .hamburger {
+        display: none;
+    }
+}
 
 :root {
     --ink: #0d0d0d;
@@ -17,9 +148,9 @@
     box-sizing: border-box;
 }
 
-html {
+/* html {
     scroll-behavior: smooth;
-}
+} */
 
 body {
     background-color: var(--ink);
@@ -109,10 +240,12 @@ nav.scrolled {
     border-color: var(--gold);
     background: rgba(201, 168, 76, 0.1);
 }
+
 .lang-select option {
-  background: var(--ink);
-  color: var(--cream);
+    background: var(--ink);
+    color: var(--cream);
 }
+
 .theme-btn {
     background: none;
     border: none;
@@ -142,13 +275,13 @@ nav.scrolled {
     position: absolute;
     inset: 0;
     background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(26, 140, 122, 0.18) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(201, 168, 76, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 30% at 10% 50%, rgba(26, 140, 122, 0.08) 0%, transparent 60%);
+        radial-gradient(ellipse 60% 40% at 80% 20%, rgba(201, 168, 76, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 10% 50%, rgba(26, 140, 122, 0.08) 0%, transparent 60%);
 }
 
 .hero-label {
     display: inline-block;
-    font-size: 0.7rem;
+    font-size: 1rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--gold);
@@ -306,7 +439,7 @@ section {
 }
 
 .section-label {
-    font-size: 0.7rem;
+    font-size: 1rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--gold);
@@ -378,11 +511,11 @@ section {
 .no-img-placeholder {
     width: 100%;
     height: 220px;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(245,240,232,0.4);
+    color: rgba(245, 240, 232, 0.4);
     font-size: 0.9rem;
 }
 
@@ -533,7 +666,7 @@ section {
 }
 
 .teacher-exp {
-    font-size: 0.75rem;
+    font-size: 1rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--teal-light);
@@ -751,8 +884,8 @@ footer {
 }
 
 .social-link {
-    width: 42px;
-    height: 42px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     border: 1px solid var(--glass-border);
     display: grid;
@@ -762,6 +895,11 @@ footer {
     font-size: 0.9rem;
     transition: all 0.3s;
 }
+
+.social-link i {
+    font-size: 1.5rem;   /* یا 2rem، 24px و ... */
+}
+
 
 .social-link:hover {
     border-color: var(--gold);
@@ -824,6 +962,7 @@ footer {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -831,9 +970,12 @@ footer {
 }
 
 @keyframes scrollPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.2;
     }
@@ -878,5 +1020,184 @@ footer {
         flex-direction: column;
         gap: 12px;
         text-align: center;
+    }
+}
+
+
+/* ============= ROCKET INSIDE CIRCLE (PURE CSS) ============= */
+.custom-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+/* دایره حاوی موشک */
+.icon-circle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(201, 168, 76, 0.6);
+    box-shadow: 0 0 20px rgba(201, 168, 76, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(4px);
+}
+
+.icon-circle:hover {
+    transform: scale(1.05);
+    border-color: var(--gold);
+    box-shadow: 0 0 30px rgba(201, 168, 76, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* موشک (با همان استایل قبل، اما داخل دایره قرار گرفته) */
+.rocket-tilted {
+    position: relative;
+    width: 100px;
+    height: 120px;
+    transform: rotate(20deg);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.icon-circle:hover .rocket-tilted {
+    transform: rotate(20deg) translateY(-5px) scale(1.02);
+}
+
+.icon-circle:hover .flame {
+    animation: burnStrong 0.15s infinite alternate;
+}
+
+.icon-circle:hover .smoke-cloud {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* بدنه استوانه‌ای */
+.rocket-body {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    width: 50px;
+    height: 85px;
+    background: linear-gradient(110deg, #e2e2e2, #a0a0a0);
+    border-radius: 40% 40% 30% 30%;
+    box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+.rocket-nose {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-bottom: 40px solid var(--gold);
+}
+
+.rocket-window {
+    position: absolute;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 18px;
+    background: #1e2a3e;
+    border-radius: 50%;
+    border: 2px solid var(--cream);
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.rocket-window::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 5px;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+}
+
+.fin-left {
+    position: absolute;
+    bottom: 12px;
+    left: -15px;
+    width: 22px;
+    height: 32px;
+    background: linear-gradient(120deg, var(--gold), #b8860b);
+    clip-path: polygon(0% 0%, 100% 20%, 100% 100%, 0% 80%);
+    transform: skewY(-6deg);
+}
+
+.fin-right {
+    position: absolute;
+    bottom: 12px;
+    right: -15px;
+    width: 22px;
+    height: 32px;
+    background: linear-gradient(120deg, var(--gold), #b8860b);
+    clip-path: polygon(0% 20%, 100% 0%, 100% 80%, 0% 100%);
+    transform: skewY(6deg);
+}
+
+.flame {
+    position: absolute;
+    bottom: -8px;
+    left: 45px;
+    width: 22px;
+    height: 28px;
+    background: radial-gradient(ellipse at center, #ff8c00, #ff4500);
+    border-radius: 0 0 50% 50%;
+    filter: blur(1px);
+    transform: rotate(5deg);
+}
+
+@keyframes burnStrong {
+    0% {
+        height: 25px;
+        opacity: 0.8;
+        transform: scaleY(1);
+    }
+
+    100% {
+        height: 35px;
+        opacity: 1;
+        transform: scaleY(1.2);
+    }
+}
+
+.smoke-cloud {
+    position: absolute;
+    bottom: -25px;
+    left: 38px;
+    width: 55px;
+    height: 30px;
+    background: radial-gradient(circle, rgba(180, 180, 180, 0.6) 0%, rgba(180, 180, 180, 0) 80%);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    transform: scale(0.8);
+}
+
+/* ریسپانسیو */
+@media (max-width: 768px) {
+    .icon-circle {
+        width: 100px;
+        height: 100px;
+    }
+
+    .rocket-tilted {
+        transform: rotate(20deg) scale(0.7);
+    }
+
+    .icon-circle:hover .rocket-tilted {
+        transform: rotate(20deg) scale(0.72) translateY(-3px);
     }
 }

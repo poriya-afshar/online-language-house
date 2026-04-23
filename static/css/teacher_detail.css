@@ -136,7 +136,7 @@ nav {
 
 .expertise-badge {
     display: inline-block;
-    font-size: 0.7rem;
+    font-size: 1rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
     color: var(--teal-light);
@@ -371,7 +371,7 @@ nav {
 
 /* About */
 .section-label {
-    font-size: 0.68rem;
+    font-size: 1rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--gold);
