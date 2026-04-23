@@ -43,3 +43,6 @@ local_settings.py
 
 # Compiled translation files
 *.mo
+
+
+.gitignore
